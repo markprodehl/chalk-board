@@ -30,6 +30,7 @@ input[type="text"]:hover {
 
 .addTodo {
   border-bottom: 1px solid white !important;
+  color: white !important;
 }
 
 button[type="submit"] {

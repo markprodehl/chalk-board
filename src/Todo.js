@@ -61,6 +61,7 @@ function Todo() {
     <div>
       <form onSubmit={handleSubmit}>
         <input
+          className="addTodo"
           type="text"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
