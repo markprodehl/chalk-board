@@ -13,6 +13,17 @@ function Todo() {
   const [newTodo, setNewTodo] = useState("");
 
   useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then(registration => {
+          console.log("Service worker registered: ", registration);
+      })
+        .catch(error => {
+          console.error("Service worker registration failed: ", error);
+      });
+    }
+
     const todoListener = db.on("value", (snapshot) => {
       const data = snapshot.val();
       const todos = Object.keys(data || {}).map((key) => ({
