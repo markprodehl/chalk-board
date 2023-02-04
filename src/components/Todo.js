@@ -3,7 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 import './Todo.css'
 // This imports the Firebase configuration data from a gitignore file
-import firebaseConfig from './config/firebaseConfig'
+import firebaseConfig from '../config/firebaseConfig'
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref("todos");
