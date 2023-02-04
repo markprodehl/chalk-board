@@ -59,12 +59,14 @@ function Todo() {
 
   return (
     <div>
+      <h1 className="header">Chalk Board</h1>
       <form onSubmit={handleSubmit}>
         <input
           className="addTodo"
           type="text"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Add item . . ."
         />
         <button type="submit">Add Item</button>
       </form>
