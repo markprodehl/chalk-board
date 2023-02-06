@@ -96,7 +96,6 @@ function Todo() {
       {user ? (
         <div>
           <h1 className="header">Chalk Board</h1>
-          <button onClick={handleSignOut}>Sign Out</button>
           <form onSubmit={handleSubmit}>
             <input
               className="addTodo"
@@ -124,6 +123,9 @@ function Todo() {
               </li>
             ))}
           </ul>
+          <div className="signOut">
+            <button className="signOut-button" onClick={handleSignOut}>Sign Out</button>
+          </div>
         </div>
       ) : (
         <div>
