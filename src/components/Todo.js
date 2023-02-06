@@ -127,8 +127,8 @@ function Todo() {
         </div>
       ) : (
         <div>
-          <button onClick={handleSignUp}>Sign Up</button>
-          <button onClick={handleLogin}>Login</button>
+            <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
+            <button className="submit-button" onClick={handleLogin}>Login</button>
           {showSignUp && <SignUp />}
           {showLogin && <Login />}
         </div>

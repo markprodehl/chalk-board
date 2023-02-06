@@ -3,7 +3,6 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import firebaseConfig from '../config/firebaseConfig';
 import './Login.css';
-import './Todo';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -26,21 +25,23 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form className="login-form" onSubmit={handleLogin}>
       <input
+        className="email-input"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
       />
       <input
+        className="password-input"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <button type="submit">Login</button>
-      {error && <p>{error}</p>}
+      <button className="submit-button" type="submit">Login</button>
+      {error && <p className="error-message">{error}</p>}
     </form>
   );
 }

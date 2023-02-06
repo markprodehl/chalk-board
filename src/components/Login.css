@@ -1,0 +1,39 @@
+.sign-up-form,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.email-input,
+.password-input {
+  width: 50%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 1.2em;
+  border: none;
+  border-bottom: 2px solid gray;
+  outline: none;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: dodgerblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: lightblue;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
