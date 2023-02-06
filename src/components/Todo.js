@@ -119,7 +119,7 @@ function Todo() {
                   value={todo.text}
                   onChange={(e) => handleEdit(todo.id, e.target.value)}
                 />
-                <button onClick={() => handleDelete(todo.id)}>Delete</button>
+                <button onClick={() => handleDelete(todo.id)}>x</button>
               </li>
             ))}
           </ul>
