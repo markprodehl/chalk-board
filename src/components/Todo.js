@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 import 'firebase/compat/auth';
@@ -17,6 +19,15 @@ function Todo() {
   const [user, setUser] = useState(null);
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleSignUp = () => {
     setShowSignUp(true);
@@ -95,6 +106,19 @@ function Todo() {
     <div>
       {user ? (
         <div>
+          <div className="signOut">
+            <IconButton onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem component="a" onClick={handleSignOut}>Sign Out</MenuItem>
+            </Menu>
+          </div>
           <h1 className="header">Chalk Board</h1>
           <form onSubmit={handleSubmit}>
             <input
@@ -123,9 +147,6 @@ function Todo() {
               </li>
             ))}
           </ul>
-          <div className="signOut">
-            <button className="signOut-button" onClick={handleSignOut}>Sign Out</button>
-          </div>
         </div>
       ) : (
         <div>

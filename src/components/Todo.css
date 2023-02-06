@@ -98,10 +98,17 @@ button:hover {
 }
 
 .signOut {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin: 10px 10px;
+  float: right;
+}
+
+.MuiSvgIcon-root {
+  color: grey;
+}
+
+.MuiMenu-list {
+  padding: 0 !important;
+  background-color: #3e3e3e;
+  color: white;
 }
 
 @media (max-width: 600px) {
