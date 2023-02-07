@@ -20,6 +20,13 @@ function Todo() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [showButtons, setShowButtons] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowButtons(true);
+    }, 700);
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -53,8 +60,6 @@ function Todo() {
       }
     });
   }, []);
-
-  
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -150,10 +155,14 @@ function Todo() {
         </div>
       ) : (
         <div>
-            <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
-            <button className="submit-button" onClick={handleLogin}>Login</button>
-          {showSignUp && <SignUp />}
-          {showLogin && <Login />}
+          {showButtons && (
+            <>
+              <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
+              <button className="submit-button" onClick={handleLogin}>Login</button>
+              {showSignUp && <SignUp />}
+              {showLogin && <Login />}
+            </>
+          )}
         </div>
       )}
     </div>
