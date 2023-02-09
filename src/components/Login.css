@@ -1,12 +1,28 @@
+.sign-up-form,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .email-input,
 .password-input {
   width: 50%;
+  max-width: 300px;
   padding: 10px;
   margin: 10px 0;
   font-size: 1.2em;
   border: none;
-  border-bottom: 2px solid gray;
-  outline: none;
+  border-radius: 5px;
+}
+
+.signUp-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 200px;
+
 }
 
 .signUp-button {
