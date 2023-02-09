@@ -154,17 +154,17 @@ function Todo() {
           </ul>
         </div>
       ) : (
-        <div>
+        <div className="signUp-button">
           {showButtons && (
             <>
               <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
               <button className="submit-button" onClick={handleLogin}>Login</button>
-              {showSignUp && <SignUp />}
-              {showLogin && <Login />}
             </>
           )}
         </div>
       )}
+        {showSignUp && <SignUp />}
+        {showLogin && <Login />}
     </div>
   );
 
