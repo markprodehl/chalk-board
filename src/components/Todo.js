@@ -155,19 +155,20 @@ function Todo() {
         </div>
       ) : (
         <div className="signUp-button">
-          {showButtons && (
-            <>
+          {showSignUp ? (
+            <SignUp setUser={setUser} setShowSignUp={setShowSignUp} />
+          ) : showLogin ? (
+            <Login setUser={setUser} setShowLogin={setShowLogin} />
+          ) : (
+            <div>
               <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
               <button className="submit-button" onClick={handleLogin}>Login</button>
-            </>
+            </div>
           )}
         </div>
       )}
-        {showSignUp && <SignUp />}
-        {showLogin && <Login />}
     </div>
   );
-
 }
 
 export default Todo;
