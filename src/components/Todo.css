@@ -33,7 +33,6 @@ input[type="text"] {
 
 input[type="text"]:hover {
   color: grey;
-  /* border: 1px  #3e3e3e; */
 }
 
 .addTodo {
