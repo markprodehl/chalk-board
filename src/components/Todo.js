@@ -161,8 +161,12 @@ function Todo() {
             <Login setUser={setUser} setShowLogin={setShowLogin} />
           ) : (
             <div>
-              <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
-              <button className="submit-button" onClick={handleLogin}>Login</button>
+              {showButtons && (
+                <>
+                  <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
+                  <button className="submit-button" onClick={handleLogin}>Login</button>
+                </>
+              )}
             </div>
           )}
         </div>
