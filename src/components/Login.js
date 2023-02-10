@@ -11,7 +11,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleEmailLogin = (e) => {
     e.preventDefault();
     firebase
       .auth()
@@ -24,25 +24,42 @@ function Login() {
       });
   };
 
+  const handleGoogleLogin = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
   return (
-    <form className="login-form" onSubmit={handleLogin}>
-      <input
-        className="email-input"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        className="password-input"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button className="submit-button" type="submit">Login</button>
-      {error && <p className="error-message">{error}</p>}
-    </form>
+    <div className="login-form">
+      <form className="login-form" onSubmit={handleEmailLogin}>
+        <input
+          className="email-input"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+        <input
+          className="password-input"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <button className="submit-button" type="submit">Login</button>
+        {error && <p className="error-message">{error}</p>}
+      </form>
+      <button className="google-button" onClick={handleGoogleLogin}>Login with Google</button>
+      {/* <button className="google-button" onClick={handleGoogleLogin}>Login with Google</button> */}
+    </div>
   );
 }
 
