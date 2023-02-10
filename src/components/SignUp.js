@@ -11,7 +11,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSignUp = (e) => {
+  const handleSignUpWithEmailAndPassword = (e) => {
     e.preventDefault();
     firebase
       .auth()
@@ -24,25 +24,38 @@ function SignUp() {
       });
   };
 
+  const handleSignUpWithGoogle = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      const result = await firebase.auth().signInWithPopup(provider);
+      console.log(result);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
-    <form className="sign-up-form" onSubmit={handleSignUp}>
-      <input
-        className="email-input"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        className="password-input"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button className="submit-button" type="submit">Sign Up</button>
+    <div className="sign-up-form">
+      <form className="sign-up-form" onSubmit={handleSignUpWithEmailAndPassword}>
+        <input
+          className="email-input"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+        <input
+          className="password-input"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <button className="submit-button" type="submit">Sign Up</button>
+      </form>
+      <button className="google-button" onClick={handleSignUpWithGoogle}>Sign Up with Google</button>
       {error && <p className="error-message">{error}</p>}
-    </form>
+    </div>
   );
 }
 
