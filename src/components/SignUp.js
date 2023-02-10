@@ -53,7 +53,11 @@ function SignUp() {
         />
         <button className="submit-button" type="submit">Sign Up</button>
       </form>
-      <button className="google-button" onClick={handleSignUpWithGoogle}>Sign Up with Google</button>
+      <button class="google-button" onClick={handleSignUpWithGoogle}>
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google logo" />
+        Sign Up with Google
+      </button>
+
       {error && <p className="error-message">{error}</p>}
     </div>
   );

@@ -26,12 +26,27 @@
 }
 
 .submit-button {
+  margin: 20px 10px;
   background-color: dodgerblue;
-  margin-top: 20px;
 }
 
 .submit-button:hover {
   background-color: lightblue;
+}
+
+.google-button {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  margin: 20px 10px;
+  border-radius: 5px;
+  background-color: white;
+  color: #333;
+}
+
+.google-button img {
+  margin-right: 10px;
+  height: 25px;
 }
 
 .error-message {

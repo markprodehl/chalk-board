@@ -57,8 +57,11 @@ function Login() {
         <button className="submit-button" type="submit">Login</button>
         {error && <p className="error-message">{error}</p>}
       </form>
-      <button className="google-button" onClick={handleGoogleLogin}>Login with Google</button>
-      {/* <button className="google-button" onClick={handleGoogleLogin}>Login with Google</button> */}
+      <button class="google-button" onClick={handleGoogleLogin}>
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google logo" />
+        Login with Google
+      </button>
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 }
