@@ -21,6 +21,8 @@ function Todo() {
   const [showLogin, setShowLogin] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [showButtons, setShowButtons] = useState(false);
+  // const [dragging, setDragging] = useState(false);
+  // const [x, setX] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
@@ -67,10 +69,10 @@ function Todo() {
         .register("/service-worker.js")
         .then(registration => {
           console.log("Service worker registered: ", registration);
-      })
+        })
         .catch(error => {
           console.error("Service worker registration failed: ", error);
-      });
+        });
     }
 
     if (user) {
@@ -107,6 +109,24 @@ function Todo() {
     db.child(user.uid).child(id).remove();
   };
 
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.setData("index", index);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e, index) => {
+    const draggedIndex = e.dataTransfer.getData("index");
+    if (draggedIndex === index) return;
+    const tempTodos = [...todos];
+    const [temp] = tempTodos.splice(draggedIndex, 1);
+    tempTodos.splice(index, 0, temp);
+    setTodos(tempTodos);
+  };
+
+
   return (
     <div>
       {user ? (
@@ -136,8 +156,14 @@ function Todo() {
             <button type="submit">Add Item</button>
           </form>
           <ul>
-            {todos.map((todo) => (
-              <li key={todo.id}>
+            {todos.map((todo, index) => (
+              <li
+                key={todo.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, index)}
+              >
                 <input
                   type="checkbox"
                   checked={todo.done}
@@ -175,4 +201,24 @@ function Todo() {
   );
 }
 
+const TodoItem = ({ todo, index, handleToggle, handleEdit, handleDelete, swapTodos }) => {
+  return (
+    <li onClick={() => swapTodos(index)}>
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onChange={() => handleToggle(todo.id)}
+      />
+      <input
+        type="text"
+        value={todo.text}
+        onChange={(e) => handleEdit(todo.id, e.target.value)}
+      />
+      <button onClick={() => handleDelete(todo.id)}>x</button>
+    </li>
+  );
+};
+
+
 export default Todo;
+
