@@ -21,8 +21,6 @@ function Todo() {
   const [showLogin, setShowLogin] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [showButtons, setShowButtons] = useState(false);
-  // const [dragging, setDragging] = useState(false);
-  // const [x, setX] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
@@ -200,25 +198,6 @@ function Todo() {
     </div>
   );
 }
-
-const TodoItem = ({ todo, index, handleToggle, handleEdit, handleDelete, swapTodos }) => {
-  return (
-    <li onClick={() => swapTodos(index)}>
-      <input
-        type="checkbox"
-        checked={todo.done}
-        onChange={() => handleToggle(todo.id)}
-      />
-      <input
-        type="text"
-        value={todo.text}
-        onChange={(e) => handleEdit(todo.id, e.target.value)}
-      />
-      <button onClick={() => handleDelete(todo.id)}>x</button>
-    </li>
-  );
-};
-
 
 export default Todo;
 
