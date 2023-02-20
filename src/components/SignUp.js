@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import 'firebase/compat/database';
 import firebaseConfig from '../config/firebaseConfig';
 import './Login.css';
 
@@ -16,8 +17,16 @@ function SignUp() {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log(user);
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const emailRef = firebase.database().ref('users/' + user.uid + '/email');
+        emailRef.set(user.email);
+        const todosRef = firebase.database().ref('todos');
+        todosRef.once('value', (snapshot) => {
+          const todos = snapshot.val();
+          todos[user.uid] = { email: user.email };
+          todosRef.update(todos);
+        });
       })
       .catch((error) => {
         setError(error.message);
@@ -28,11 +37,21 @@ function SignUp() {
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
       const result = await firebase.auth().signInWithPopup(provider);
-      console.log(result);
+      const user = result.user;
+      const emailRef = firebase.database().ref('users/' + user.uid + '/email');
+      emailRef.set(user.email);
+      // Uncmment if you need to save the email on the todo object 
+      // const todosRef = firebase.database().ref('todos');
+      todosRef.once('value', (snapshot) => {
+        const todos = snapshot.val();
+        todos[user.uid] = { email: user.email };
+        todosRef.update(todos);
+      });
     } catch (error) {
       setError(error.message);
     }
   };
+
 
   return (
     <div className="sign-up-form">
