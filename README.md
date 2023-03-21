@@ -1,8 +1,14 @@
 ### Installation
 
-Initialize a react project
-Set up Google Firebase - npm install firebase
-Add your configuration settings to `firebaseConfig` somewhere in your app. Refer to the Firebase Quickstart Guide https://firebase.google.com/docs/hosting/quickstart
+Initialize a react project using the `create-react-app` command
+
+Set up Google Firebase - Refer to the Firebase Quickstart Guide https://firebase.google.com/docs/hosting/quickstart
+
+`npm install firebase`
+
+`npm install -g firebase-tools`
+
+Add your firebase configuration settings to `firebaseConfig` somewhere in your app. 
 
 ### `npm run build`
 
