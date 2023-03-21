@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Modal, TextField, Button } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 import 'firebase/compat/auth';
-import './Todo.css'
+import './Todo.css';
 import SignUp from './SignUp';
 import Login from './Login';
 // This imports the Firebase configuration data from a gitignore file
-import firebaseConfig from '../config/firebaseConfig'
+import firebaseConfig from '../config/firebaseConfig';
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref("todos");
@@ -21,6 +21,10 @@ function Todo() {
   const [showLogin, setShowLogin] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [showButtons, setShowButtons] = useState(false);
+  const [searchEmail, setSearchEmail] = useState('');
+  const [searchResult, setSearchResult] = useState(null);
+  const [followedUsers, setFollowedUsers] = useState([]);
+  const [showFollowedUsersModal, setShowFollowedUsersModal] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -104,7 +108,8 @@ function Todo() {
   };
 
   const handleDelete = (id) => {
-    db.child(user.uid).child(id).remove();
+    db.child
+      (user.uid).child(id).remove();
   };
 
   const handleDragStart = (e, index) => {
@@ -124,6 +129,44 @@ function Todo() {
     setTodos(tempTodos);
   };
 
+  const handleSearchEmail = (e) => {
+    e.preventDefault();
+    firebase.database().ref("users")
+      .orderByChild("email")
+      .equalTo(searchEmail)
+      .once("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const userId = Object.keys(data)[0];
+          const email = data[userId].email;
+          setSearchResult({ id: userId, email: email });
+        } else {
+          setSearchResult(null);
+          alert("No user found");
+        }
+      });
+  };
+
+  const handleFollowUser = () => {
+    if (searchResult) {
+      db.child(user.uid).child("followedUsers").child(searchResult.id).set(searchResult.email);
+      setFollowedUsers([...followedUsers, searchResult.email]);
+      setSearchResult(null);
+    }
+  };
+
+  const handleShowFollowedUsersModal = () => {
+    db.child(user.uid).child("followedUsers").once("value", (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const followedUsers = Object.values(data);
+        setFollowedUsers(followedUsers);
+      } else {
+        setFollowedUsers([]);
+      }
+      setShowFollowedUsersModal(true);
+    });
+  };
 
   return (
     <div>
@@ -163,8 +206,7 @@ function Todo() {
                 onDrop={(e) => handleDrop(e, index)}
               >
                 <input
-                  type="checkbox"
-                  checked={todo.done}
+                  type="checkbox" checked={todo.done}
                   onChange={() => handleToggle(todo.id)}
                 />
                 <input
@@ -176,6 +218,35 @@ function Todo() {
               </li>
             ))}
           </ul>
+          <div className="searchUser">
+            <form onSubmit={handleSearchEmail}>
+              <TextField
+                label="Search User by Email"
+                type="email"
+                value={searchEmail}
+                onChange={(e) => setSearchEmail(e.target.value)}
+              />
+              <Button type="submit">Search</Button>
+            </form>
+            {searchResult && (
+              <div>
+                <p>{searchResult.email}</p>
+                <button onClick={handleFollowUser}>Follow</button>
+              </div>
+            )}
+          </div>
+          <button onClick={handleShowFollowedUsersModal}>Followed Users</button>
+          <Modal
+            open={showFollowedUsersModal}
+            onClose={() => setShowFollowedUsersModal(false)}
+          >
+            <div className="followedUsersModal">
+              <h2>Followed Users</h2>
+              {followedUsers.map((email) => (
+                <p key={email}>{email}</p>
+              ))}
+            </div>
+          </Modal>
         </div>
       ) : (
         <div className="signUp-button">
@@ -200,4 +271,3 @@ function Todo() {
 }
 
 export default Todo;
-
