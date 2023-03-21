@@ -1,4 +1,4 @@
-### Instalation
+### Installation
 
 Initialize a react project
 Set up Google Firebase - npm install firebase
