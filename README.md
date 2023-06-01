@@ -18,13 +18,6 @@ Chalk Board is a Realtime Todo application built with React, Firestore and Fireb
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-## Prerequisites
-
-Before you begin, ensure you have met the following requirements:
-
-- You have installed the latest version of `npm` and `node`.
-- You have a Firebase project with Firestore and Firebase Authentication enabled.
-
 ## Installation
 
 - Make sure you have `Node.js` and `npm` installed.
@@ -49,7 +42,7 @@ Before you begin, ensure you have met the following requirements:
     npm install
     ```
 
-4. Firebase Configuration - In the src directory create a new `congig` folder and inside of that make a file `firebaseConfig`. You will store all your environment variables in this file. 
+4. Firebase Configuration - In the src directory create a new `config` folder and inside of that make a file `firebaseConfig`. You will store all your environment variables in this file. 
 **IMPORTANT**: Do not commit or share these secrets publicly. Be sure to include `firebaseConfig` in your `.gitignore` file like this `/src/config/firebaseConfig.js`
 
     ```
