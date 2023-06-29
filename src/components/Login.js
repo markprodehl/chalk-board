@@ -89,18 +89,28 @@ function Auth() {
   };
 
   // Uncomment this section if you want to include the "Forgot Password?" functionality
-  // const handleForgotPassword = () => {
-  //   firebase
-  //     .auth()
-  //     .sendPasswordResetEmail(email)
-  //     .then(() => {
-  //       setError("Password reset email has been sent.");
-  //     })
-  //     .catch((error) => {
-  //       setError(error.message);
-  //     });
-  // };
-
+  const handleForgotPassword = () => {
+    if (!email) {
+      setError("Please input your email first.");
+      return;
+    }
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        setError("Password reset email has been sent.");
+      })
+      .catch((error) => {
+        let errorMessage = "Error resetting password.";
+        if (error.code === "auth/invalid-email") {
+          errorMessage = "The email address is not valid.";
+        } else if (error.code === "auth/user-not-found") {
+          errorMessage = "There is no user record of this email.";
+        }
+        setError(errorMessage);
+      });
+  };
+  
   return (
     <div className="auth-form">
       <form className="auth-fields" onSubmit={handleSignUpWithEmailAndPassword}>
@@ -136,10 +146,9 @@ function Auth() {
         <button className="google-login" type="google-login">
           <img src={googleIcon} alt="google-login" className="google-login" onClick={handleGoogleLogin} />
         </button>
-      {/* Uncomment this section if you want to include the "Forgot Password?" functionality */}
-      {/* <div>
+      <div className="forgot-password">
         <p className="forgot-password" onClick={handleForgotPassword}>Forgot Password?</p>
-      </div> */}
+      </div>
     </div>
   );
   
