@@ -1,52 +1,66 @@
-.sign-up-form,
-.login-form {
+.auth-fields {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  margin-top: 200px;
 }
 
-.email-input,
-.password-input {
-  width: 50%;
-  max-width: 300px;
-  padding: 10px;
-  margin: 10px 0;
-  font-size: 1.2em;
+.auth-input {
+  justify-content: center;
+  width: 300px;
+  height: 25px;
+  margin-bottom: 10px;
+  padding: 6px;
   border: none;
   border-radius: 5px;
 }
 
-.signUp-button {
+.auth-buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 75px;
-
 }
 
 .submit-button {
-  margin: 20px 10px;
-  background-color: dodgerblue;
+  width: 100px;
+  margin: 0 10px 15px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #007bff;
+  border: none;
+  color: white;
 }
 
 .submit-button:hover {
-  background-color: lightblue;
+  background-color: #0069d9;
 }
 
-.google-button {
+.google-login {
   display: flex;
-  align-items: center;
-  height: 42px;
-  margin: 20px 10px;
-  border-radius: 5px;
-  background-color: white;
-  color: #333;
+  justify-content: center;
+  width: 180px;
+  padding: 0;
+  background-color: transparent;
+  margin: 0 auto; 
+  border: none;
 }
 
-.google-button img {
-  margin-right: 10px;
-  height: 25px;
+.google-login:hover {
+  opacity: 0.8
+}
+
+.signOut {
+  float: right;
+}
+
+.MuiMenu-list {
+  padding: 0 !important;
+  background-color: #3e3e3e;
+  color: white;
+}
+
+.MuiMenu-list:hover {
+  background-color: #545353;
 }
 
 .error-message {

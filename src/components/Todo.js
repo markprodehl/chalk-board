@@ -5,7 +5,6 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 import 'firebase/compat/auth';
 import './Todo.css'
-import SignUp from './SignUp';
 import Login from './Login';
 // This imports the Firebase configuration data from a gitignore file
 import firebaseConfig from '../config/firebaseConfig'
@@ -17,16 +16,15 @@ function Todo() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [user, setUser] = useState(null);
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
+  // const [showLogin, setShowLogin] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [showButtons, setShowButtons] = useState(false);
+  // const [showButtons, setShowButtons] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowButtons(true);
-    }, 700);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setShowButtons(true);
+  //   }, 700);
+  // }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,15 +34,15 @@ function Todo() {
     setAnchorEl(null);
   };
 
-  const handleSignUp = () => {
-    setShowSignUp(true);
-    setShowLogin(false);
-  };
+  // const handleSignUp = () => {
+  //   setShowSignUp(true);
+  //   setShowLogin(false);
+  // };
 
-  const handleLogin = () => {
-    setShowLogin(true);
-    setShowSignUp(false);
-  };
+  // const handleLogin = () => {
+  //   setShowLogin(true);
+  //   setShowSignUp(false);
+  // };
 
   const handleSignOut = () => {
     firebase.auth().signOut();
@@ -139,7 +137,7 @@ function Todo() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem component="a" onClick={handleSignOut}>Sign Out</MenuItem>
+              <MenuItem className="signout-button" component="a" onClick={handleSignOut}>Sign Out</MenuItem>
             </Menu>
           </div>
           <h1 className="header">Chalk Board</h1>
@@ -151,7 +149,7 @@ function Todo() {
               onChange={(e) => setNewTodo(e.target.value)}
               placeholder="Add item . . ."
             />
-            <button type="submit">Add Item</button>
+            <button className="add-button" type="submit">Add Item</button>
           </form>
           <ul>
             {todos.map((todo, index) => (
@@ -172,27 +170,20 @@ function Todo() {
                   value={todo.text}
                   onChange={(e) => handleEdit(todo.id, e.target.value)}
                 />
-                <button onClick={() => handleDelete(todo.id)}>x</button>
+                <button className="delete-button" onClick={() => handleDelete(todo.id)}>x</button>
               </li>
             ))}
           </ul>
         </div>
       ) : (
-        <div className="signUp-button">
-          {showSignUp ? (
-            <SignUp setUser={setUser} setShowSignUp={setShowSignUp} />
-          ) : showLogin ? (
-            <Login setUser={setUser} setShowLogin={setShowLogin} />
-          ) : (
-            <div>
-              {showButtons && (
-                <>
-                  <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
-                  <button className="submit-button" onClick={handleLogin}>Login</button>
-                </>
-              )}
-            </div>
-          )}
+        <div className="signup-buttons">
+          {/* <SignUp setUser={setUser} setShowSignUp={setShowSignUp} /> */}
+          <Login />
+        
+          {/* <div>
+            <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
+            <button className="submit-button" onClick={handleLogin}>Login</button>
+          </div> */}
         </div>
       )}
     </div>

@@ -37,11 +37,29 @@ input[type="text"]:hover {
 
 .addTodo {
   border-bottom: 1px solid white !important;
-  color: white !important;
+  /* color: white !important; */
 }
 
-button[type="submit"] {
+.add-button {
   background-color: #4caf50;
+  color: #fff;
+  padding: 7px;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Chalkboard SE', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  font-family: 'Chalkboard SE', sans-serif;
+  background-color: #3e8e41;
+}
+
+.delete-button {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background-color: #f44336;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -50,9 +68,8 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
-  font-family: 'Chalkboard SE', sans-serif;
-  background-color: #3e8e41;
+.delete-button:hover {
+  background-color: #FF5A27;
 }
 
 ul {
@@ -81,34 +98,9 @@ input[type="checkbox"]:checked+input[type="text"] {
   text-decoration: line-through;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #f44336;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-family: 'Chalkboard SE', sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-button:hover {
-  background-color: #FF5A27;
-}
-
-.signOut {
-  float: right;
-}
-
+/* Menu */
 .MuiSvgIcon-root {
   color: grey;
-}
-
-.MuiMenu-list {
-  padding: 0 !important;
-  background-color: #3e3e3e;
-  color: white;
 }
 
 @media (max-width: 600px) {
@@ -120,7 +112,7 @@ button:hover {
     margin-bottom: 10px;
   }
 
-  button[type="submit"] {
+ .add-button {
     margin-top: 10px;
   }
 }

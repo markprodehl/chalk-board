@@ -1,15 +1,38 @@
 import React, { useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import 'firebase/compat/database';
 import firebaseConfig from '../config/firebaseConfig';
 import './Login.css';
+import googleIcon from '../assets/google_signin_light.png'
 
 firebase.initializeApp(firebaseConfig);
 
-function Login() {
+function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const handleSignUpWithEmailAndPassword = (e) => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const emailRef = firebase.database().ref('users/' + user.uid + '/email');
+        emailRef.set(user.email);
+        const todosRef = firebase.database().ref('todos');
+        todosRef.once('value', (snapshot) => {
+          const todos = snapshot.val();
+          todos[user.uid] = { email: user.email };
+          todosRef.update(todos);
+        });
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
 
   const handleEmailLogin = (e) => {
     e.preventDefault();
@@ -41,7 +64,7 @@ function Login() {
       });
   };
 
-  // Need to update this function and then uncomment the link in the return
+  // Uncomment this section if you want to include the "Forgot Password?" functionality
   // const handleForgotPassword = () => {
   //   firebase
   //     .auth()
@@ -55,33 +78,47 @@ function Login() {
   // };
 
   return (
-    <div className="login-form">
-      <form className="login-form" onSubmit={handleEmailLogin}>
-        <input
-          className="email-input"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <input
-          className="password-input"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button className="submit-button" type="submit">Login</button>
-        {error && <p className="error-message">{error}</p>}
+    <div className="auth-form">
+      <form className="auth-fields" onSubmit={handleSignUpWithEmailAndPassword}>
+        <div>
+          <input
+            className="auth-input"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+        </div>
+        <div>
+          <input
+            className="auth-input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+        </div>
       </form>
-      <button className="google-button" onClick={handleGoogleLogin}>
-        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google logo" />
-        Login with Google
-      </button>
-      {/* <p className="forgot-password" onClick={handleForgotPassword}>Forgot Password?</p>
-      {error && <p className="error-message">{error}</p>} */}
+      <div className="auth-buttons">
+        <div>
+          <button className="submit-button sign-up">Sign Up</button>
+        </div>
+        <div>
+          <button className="submit-button login" onClick={handleEmailLogin}>Sign In</button>
+        </div>
+      </div>
+        <button className="google-login" type="google-login">
+          <img src={googleIcon} alt="google-login" className="google-login" onClick={handleGoogleLogin} />
+        </button>
+      {/* Uncomment this section if you want to include the "Forgot Password?" functionality */}
+      {/* <div>
+        <p className="forgot-password" onClick={handleForgotPassword}>Forgot Password?</p>
+      </div> */}
+      {error && <div><p className="error-message">{error}</p></div>}
     </div>
   );
+  
+  
 }
 
-export default Login;
+export default Auth;
