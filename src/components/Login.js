@@ -30,7 +30,20 @@ function Auth() {
         });
       })
       .catch((error) => {
-        setError(error.message);
+        console.error('Error signing up:', error)
+        let errorMessage = 'Error signing up.';
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'The email address is already in use by another account.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'The email address is not valid.';
+        } else if (error.code === 'auth/operation-not-allowed') {
+          errorMessage = 'Email/password accounts are not enabled. Enable email/password in Firebase Console.';
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = 'The password is too weak.';
+        } else if (error.code === 'auth/internal-error') {
+          errorMessage = 'Please enter a valid email and password';
+        } 
+        setError(errorMessage);
       });
   };
 
@@ -47,9 +60,20 @@ function Auth() {
         console.log(user);
       })
       .catch((error) => {
-        setError(error.message);
+        console.error('Error signing in:', error)
+        let errorMessage = 'Error signing in.';
+        if (error.code === 'auth/wrong-password') {
+          errorMessage = 'Incorrect password. Please try again.';
+        } else if (error.code === 'auth/user-not-found') {
+          errorMessage = 'No account exists with this email. Please sign up.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'The email address is not valid.';
+        } else if (error.code === 'auth/missing-password') {
+          errorMessage = 'You need a password.';
+        }
+        setError(errorMessage);
       });
-  };
+    };
 
   const handleGoogleLogin = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -80,6 +104,8 @@ function Auth() {
   return (
     <div className="auth-form">
       <form className="auth-fields" onSubmit={handleSignUpWithEmailAndPassword}>
+      <h1 className="auth-header"> Chalk Board</h1>
+        {error && <div><p className="error-message">{error}</p></div>}
         <div>
           <input
             className="auth-input"
@@ -101,7 +127,7 @@ function Auth() {
       </form>
       <div className="auth-buttons">
         <div>
-          <button className="submit-button sign-up">Sign Up</button>
+          <button className="submit-button sign-up" onClick={handleSignUpWithEmailAndPassword}>Sign Up</button>
         </div>
         <div>
           <button className="submit-button login" onClick={handleEmailLogin}>Sign In</button>
@@ -114,7 +140,6 @@ function Auth() {
       {/* <div>
         <p className="forgot-password" onClick={handleForgotPassword}>Forgot Password?</p>
       </div> */}
-      {error && <div><p className="error-message">{error}</p></div>}
     </div>
   );
   
