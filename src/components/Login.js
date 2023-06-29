@@ -105,7 +105,7 @@ function Auth() {
     <div className="auth-form">
       <form className="auth-fields" onSubmit={handleSignUpWithEmailAndPassword}>
       <h1 className="auth-header"> Chalk Board</h1>
-        {error && <div><p className="error-message">{error}</p></div>}
+        {error ? <div><p className="error-message">{error}</p></div> : <div className="blank-error">I am transparent</div>}
         <div>
           <input
             className="auth-input"
@@ -113,16 +113,16 @@ function Auth() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-          />
+            />
         </div>
         <div>
           <input
-            className="auth-input"
+            className="auth-input password-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-          />
+            />
         </div>
       </form>
       <div className="auth-buttons">
