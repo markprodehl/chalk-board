@@ -1,7 +1,7 @@
 const CACHE_NAME = "todo-pwa-cache-v1";
 const urlsToCache = ['/'];
 
-self.__WB_MANIFEST.addEventListener('install', (event) => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
