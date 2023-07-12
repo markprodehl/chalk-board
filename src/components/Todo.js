@@ -16,15 +16,13 @@ function Todo() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [user, setUser] = useState(null);
-  // const [showLogin, setShowLogin] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // const [showButtons, setShowButtons] = useState(false);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setShowButtons(true);
-  //   }, 700);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowButtons(true);
+    }, 700);
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,16 +31,6 @@ function Todo() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  // const handleSignUp = () => {
-  //   setShowSignUp(true);
-  //   setShowLogin(false);
-  // };
-
-  // const handleLogin = () => {
-  //   setShowLogin(true);
-  //   setShowSignUp(false);
-  // };
 
   const handleSignOut = () => {
     firebase.auth().signOut();
@@ -122,7 +110,6 @@ function Todo() {
     setTodos(tempTodos);
   };
 
-
   return (
     <div>
       {user ? (
@@ -141,17 +128,17 @@ function Todo() {
             </Menu>
           </div>
           <h1 className="header">Chalk Board</h1>
-          <form onSubmit={handleSubmit}>
-            <input
-              className="addTodo"
-              type="text"
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-              placeholder="Add item . . ."
-            />
-            <button className="add-button" type="submit">Add Item</button>
-          </form>
           <ul>
+            <form onSubmit={handleSubmit}>
+              <input
+                className="add-text"
+                type="text"
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+                placeholder="Add item . . ."
+              />
+              <button className="add-button" type="submit">+</button>
+            </form>
             {todos.map((todo, index) => (
               <li
                 key={todo.id}
@@ -177,13 +164,7 @@ function Todo() {
         </div>
       ) : (
         <div className="signup-buttons">
-          {/* <SignUp setUser={setUser} setShowSignUp={setShowSignUp} /> */}
           <Login />
-        
-          {/* <div>
-            <button className="submit-button" onClick={handleSignUp}>Sign Up</button>
-            <button className="submit-button" onClick={handleLogin}>Login</button>
-          </div> */}
         </div>
       )}
     </div>

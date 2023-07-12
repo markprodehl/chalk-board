@@ -15,18 +15,18 @@ form {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 20px;
+  margin: 20px 10px;
 }
 
 input[type="text"] {
   padding: 10px;
+  margin-right: 10px;
   background-color: #3e3e3e;
   color: white;
   font-size: 1rem;
   border: none;
-  margin-right: 10px;
   flex-grow: 1;
-  border-bottom: 0.5px  solid grey;
+  /* border-bottom: 1px solid rgba(237, 235, 235, 0.1); */
   outline: none;
   font-family: 'Chalkboard SE', sans-serif
 }
@@ -35,14 +35,20 @@ input[type="text"]:hover {
   color: grey;
 }
 
-.addTodo {
+.add-text {
   border-bottom: 1px solid white !important;
+}
+
+input.add-text:hover {
+  color: white;
 }
 
 .add-button {
   background-color: #4caf50;
   color: #fff;
-  padding: 7px;
+  margin-left: 10px;
+  /* padding: 7px; */
+   padding: 6px 12px;
   border: none;
   border-radius: 5px;
   font-family: 'Chalkboard SE', sans-serif;
@@ -104,14 +110,14 @@ input[type="checkbox"]:checked+input[type="text"] {
 
 @media (max-width: 600px) {
   form {
-    flex-direction: column;
+    /* flex-direction: column; */
   }
 
   input[type="text"] {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
   }
 
  .add-button {
-    margin-top: 10px;
+    /* margin-top: 10px; */
   }
 }
