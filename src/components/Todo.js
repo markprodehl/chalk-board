@@ -6,6 +6,7 @@ import 'firebase/compat/database';
 import 'firebase/compat/auth';
 import './Todo.css'
 import Login from './Login';
+import { ClipLoader } from 'react-spinners';
 // This imports the Firebase configuration data from a gitignore file
 import firebaseConfig from '../config/firebaseConfig'
 
@@ -17,12 +18,7 @@ function Todo() {
   const [newTodo, setNewTodo] = useState("");
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShowButtons(true);
-    }, 700);
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,6 +40,7 @@ function Todo() {
       } else {
         setUser(null);
       }
+      setLoading(false);
     });
   }, []);
 
@@ -112,7 +109,16 @@ function Todo() {
 
   return (
     <div>
-      {user ? (
+      {loading ? (
+        <div className="spinner">
+          <ClipLoader 
+           loading={loading} 
+           size={50}
+           type="Puff"
+           color={"#007bff"} 
+          />
+        </div>
+      ) : user ? (
         <div>
           <div className="signOut">
             <IconButton onClick={handleClick}>
