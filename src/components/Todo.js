@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { IconButton, Menu, MenuItem } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+import MoreVert from '@mui/icons-material/MoreVert';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 import 'firebase/compat/auth';
@@ -45,15 +45,26 @@ function Todo() {
   }, []);
 
   useEffect(() => {
+    // if ("serviceWorker" in navigator) {
+    //   navigator.serviceWorker
+    //     .register("/service-worker.js")
+    //     .then(registration => {
+    //       console.log("Service worker registered: ", registration);
+    //     })
+    //     .catch(error => {
+    //       console.error("Service worker registration failed: ", error);
+    //     });
+    // }
+
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/service-worker.js")
-        .then(registration => {
-          console.log("Service worker registered: ", registration);
-        })
-        .catch(error => {
-          console.error("Service worker registration failed: ", error);
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => {
+          registration.unregister();
+          console.log("Service worker unregistered: ", registration);
         });
+      }).catch(error => {
+        console.error("Service worker unregistration failed: ", error);
+      });
     }
 
     if (user) {
@@ -122,7 +133,7 @@ function Todo() {
         <div>
           <div className="signOut">
             <IconButton onClick={handleClick}>
-              <MoreVertIcon />
+              <MoreVert />
             </IconButton>
             <Menu
               anchorEl={anchorEl}
