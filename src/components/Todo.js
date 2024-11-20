@@ -144,7 +144,7 @@ function Todo() {
               <MenuItem className="signout-button" component="a" onClick={handleSignOut}>Sign Out</MenuItem>
             </Menu>
           </div>
-          <h1 className="header">Chalk Board</h1>
+          <h1 className="header">Duck Board</h1>
           <ul>
             <form onSubmit={handleSubmit}>
               <input
