@@ -114,7 +114,7 @@ function Auth() {
   return (
     <div className="auth-form">
       <form className="auth-fields" onSubmit={handleSignUpWithEmailAndPassword}>
-      <h1 className="auth-header"> Chalk Board</h1>
+      <h1 className="auth-header"> Duck Board</h1>
         {error ? <div><p className="error-message">{error}</p></div> : <div className="blank-error">I am transparent</div>}
         <div>
           <input
