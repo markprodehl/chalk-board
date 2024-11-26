@@ -1,6 +1,26 @@
+:root {
+  --bg-color: #3e3e3e;
+  --text-color: #fff;
+  --input-bg-color: #3e3e3e;
+  --button-bg-color: #589c5b;
+  --button-hover-bg-color: #3e8e41;
+  --delete-button-bg-color: #f4942e;
+  --delete-button-hover-bg-color: #f5a551;
+}
+
+.light-mode {
+  --bg-color: #eef5f5;
+  --text-color: #000;
+  --input-bg-color: #eef5f5;
+  --button-bg-color: #56a15d;
+  --button-hover-bg-color: #6fac75;
+  --delete-button-bg-color: #f4942e;
+  --delete-button-hover-bg-color: #f5a551;
+}
+
 body {
-  background-color: #3e3e3e;
-  color: #fff;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: Arial, sans-serif;
 }
 
@@ -14,7 +34,7 @@ body {
 .header {
   display: flex;
   justify-content: center;
-  margin-left: 44px;
+  margin: 20px 0;
   font-family: 'Chalkboard SE', sans-serif;
 }
 
@@ -26,16 +46,15 @@ form {
 }
 
 input[type="text"] {
-  padding: 10px;
+  /* padding: 10px; This creates more space between list items*/
   margin-right: 10px;
-  background-color: #3e3e3e;
-  color: white;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
   font-size: 1rem;
   border: none;
   flex-grow: 1;
-  /* border-bottom: 1px solid rgba(237, 235, 235, 0.1); */
   outline: none;
-  font-family: 'Chalkboard SE', sans-serif
+  font-family: 'Chalkboard SE', sans-serif;
 }
 
 input[type="text"]:hover {
@@ -43,36 +62,42 @@ input[type="text"]:hover {
 }
 
 .add-text {
-  border-bottom: 1px solid white !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5) !important; /* Light line for dark mode */
 }
 
-input.add-text:hover {
-  color: white;
+.light-mode .add-text {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5) !important; /* Light line for light mode */
+}
+
+.add-text:focus {
+  border-bottom: 1px solid var(--button-bg-color); /* Highlight on focus */
 }
 
 .add-button {
-  background-color: #4caf50;
-  color: #fff;
+  background-color: var(--button-bg-color);
+  color: var(--text-color);
   margin-left: 10px;
-  /* padding: 7px; */
-   padding: 6px 12px;
+  padding: 6px 12px;
   border: none;
   border-radius: 5px;
   font-family: 'Chalkboard SE', sans-serif;
   font-size: 1rem;
   cursor: pointer;
+
+  display: flex;             /* Enable flexbox */
+  justify-content: center;   /* Center text horizontally */
+  align-items: center;       /* Center text vertically */
 }
 
 .add-button:hover {
-  font-family: 'Chalkboard SE', sans-serif;
-  background-color: #3e8e41;
+  background-color: var(--button-hover-bg-color);
 }
 
 .delete-button {
   margin-left: 10px;
   padding: 6px 12px;
-  background-color: #f44336;
-  color: #fff;
+  background-color: var(--delete-button-bg-color);
+  color: var(--text-color);
   border: none;
   border-radius: 5px;
   font-family: 'Chalkboard SE', sans-serif;
@@ -81,7 +106,7 @@ input.add-text:hover {
 }
 
 .delete-button:hover {
-  background-color: #FF5A27;
+  background-color: var(--delete-button-hover-bg-color);
 }
 
 ul {
@@ -101,12 +126,8 @@ input[type="checkbox"] {
   margin-right: 10px;
 }
 
-input[type="text"][readonly] {
-  background-color: #ccc;
-}
-
-input[type="checkbox"]:checked+input[type="text"] {
-  color: #4caf50;
+input[type="checkbox"]:checked + input[type="text"] {
+  color: var(--button-bg-color);
   text-decoration: line-through;
 }
 
@@ -116,15 +137,15 @@ input[type="checkbox"]:checked+input[type="text"] {
 }
 
 @media (max-width: 600px) {
-  form {
-    /* flex-direction: column; */
+  /* form {
+    flex-direction: column;
   }
 
   input[type="text"] {
-    /* margin-bottom: 10px; */
-  }
+    margin-bottom: 10px;
+  } */
 
- .add-button {
-    /* margin-top: 10px; */
-  }
+  /* .add-button {
+    margin-top: 10px;
+  } */
 }
