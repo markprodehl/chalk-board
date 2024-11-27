@@ -18,7 +18,7 @@ function Todo() {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -122,10 +122,10 @@ function Todo() {
               onClose={handleClose}
             >
               <MenuItem>
-                <FormControlLabel
-                  control={<Switch checked={isDarkMode} onChange={toggleDarkMode} />}
-                  label={isDarkMode ? "Light Mode" : "Dark Mode"}
-                />
+              <FormControlLabel
+                control={<Switch checked={isDarkMode} onChange={toggleDarkMode} />}
+                label={isDarkMode ? "Light Mode" : "Dark Mode"}
+              />
               </MenuItem>
               <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
             </Menu>
