@@ -46,12 +46,11 @@ form {
 }
 
 input[type="text"] {
-  /* padding: 10px; This creates more space between list items*/
   margin-right: 10px;
   background-color: var(--input-bg-color);
   color: var(--text-color);
   font-size: 1rem;
-  border: none;
+  border: none; /* Removed border-bottom */
   flex-grow: 1;
   outline: none;
   font-family: 'Chalkboard SE', sans-serif;
@@ -59,18 +58,6 @@ input[type="text"] {
 
 input[type="text"]:hover {
   color: grey;
-}
-
-.add-text {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5) !important; /* Light line for dark mode */
-}
-
-.light-mode .add-text {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5) !important; /* Light line for light mode */
-}
-
-.add-text:focus {
-  border-bottom: 1px solid var(--button-bg-color); /* Highlight on focus */
 }
 
 .add-button {
@@ -133,19 +120,112 @@ input[type="checkbox"]:checked + input[type="text"] {
 
 /* Menu */
 .MuiSvgIcon-root {
-  color: grey;
+  color: var(--text-color);
 }
 
-@media (max-width: 600px) {
-  /* form {
-    flex-direction: column;
+.MuiMenu-paper {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.MuiMenuItem-root:hover {
+  background-color: var(--button-hover-bg-color) !important;
+}
+
+.board-edit-button-container {
+  display: flex;
+  justify-content: center; /* Center-align the buttons horizontally */
+  gap: 5px; /* Reduce the spacing between the buttons */
+  margin-top: 10px;
+}
+
+.board-save-button,
+.board-cancel-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.board-save-button svg {
+  color: rgb(101, 101, 239);
+  font-size: 1.5rem;
+}
+
+.board-cancel-button svg {
+  color: red;
+  font-size: 1.5rem;
+}
+
+.board-save-button:hover svg {
+  color: darkblue;
+}
+
+.board-cancel-button:hover svg {
+  color: darkred;
+}
+
+.boards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive columns */
+  gap: 15px; /* Add spacing between grid items */
+  padding: 10px; /* Add padding to the container */
+}
+
+.board-tile {
+  background: var(--input-bg-color);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+  transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effect */
+}
+
+.board-tile:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Increase shadow on hover */
+}
+
+
+.board-tile h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-family: 'Chalkboard SE', sans-serif;
+  word-wrap: break-word; /* Ensure board names wrap on smaller screens */
+}
+
+.light-mode .board-tile {
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Add a line underneath specific inputs */
+input.new-board-name,
+input.new-todo {
+  border-bottom: 1px solid var(--text-color); /* Add a line underneath */
+  border-radius: 0; /* Ensure the line appears only at the bottom */
+}
+
+/* Remove line for other inputs (like Todo list fields) */
+input[type="text"]:not(.new-board-name):not(.new-todo) {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .board-tile {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .board-tile {
+    padding: 8px;
   }
 
-  input[type="text"] {
-    margin-bottom: 10px;
-  } */
-
-  /* .add-button {
-    margin-top: 10px;
-  } */
+  .board-tile h3 {
+    font-size: 0.9rem; /* Adjust font size for smaller screens */
+  }
 }
+
