@@ -8,13 +8,16 @@ import "./Todo.css";
 import Login from "./Login";
 import { ClipLoader } from "react-spinners";
 import firebaseConfig from "../config/firebaseConfig";
+import Board from "./Board"; // New component for individual boards
+import BoardsDashboard from "./BoardsDashboard"; // New component for boards dashboard
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database().ref("todos");
+const db = firebase.database().ref("boards");
 
 function Todo() {
-  const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState("");
+  const [boards, setBoards] = useState([]);
+  const [selectedBoard, setSelectedBoard] = useState(null);
+  const [newBoardName, setNewBoardName] = useState("");
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,56 +54,29 @@ function Todo() {
 
   useEffect(() => {
     if (user) {
-      const todoListener = db.child(user.uid).on("value", (snapshot) => {
+      const boardListener = db.child(user.uid).on("value", (snapshot) => {
         const data = snapshot.val();
-        const todos = Object.keys(data || {}).map((key) => ({
+        const userBoards = Object.keys(data || {}).map((key) => ({
           id: key,
           ...data[key],
         }));
-        setTodos(todos);
+        setBoards(userBoards);
       });
       return () => {
-        db.child(user.uid).off("value", todoListener);
+        db.child(user.uid).off("value", boardListener);
       };
     }
   }, [user]);
 
-  const handleSubmit = (e) => {
+  const handleAddBoard = (e) => {
     e.preventDefault();
-    if (!newTodo.trim() || !user) return;
-    db.child(user.uid).push({ text: newTodo, done: false });
-    setNewTodo("");
+    if (!newBoardName.trim() || !user) return;
+    db.child(user.uid).push({ name: newBoardName, todos: {} });
+    setNewBoardName("");
   };
 
-  const handleToggle = (id) => {
-    db.child(user.uid).child(id).update({
-      done: !todos.find((t) => t.id === id).done,
-    });
-  };
-
-  const handleEdit = (id, text) => {
-    db.child(user.uid).child(id).update({ text });
-  };
-
-  const handleDelete = (id) => {
-    db.child(user.uid).child(id).remove();
-  };
-
-  const handleDragStart = (e, index) => {
-    e.dataTransfer.setData("index", index);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e, index) => {
-    const draggedIndex = e.dataTransfer.getData("index");
-    if (draggedIndex === index) return;
-    const tempTodos = [...todos];
-    const [temp] = tempTodos.splice(draggedIndex, 1);
-    tempTodos.splice(index, 0, temp);
-    setTodos(tempTodos);
+  const handleSelectBoard = (boardId) => {
+    setSelectedBoard(boardId);
   };
 
   return (
@@ -122,52 +98,30 @@ function Todo() {
               onClose={handleClose}
             >
               <MenuItem>
-              <FormControlLabel
-                control={<Switch checked={isDarkMode} onChange={toggleDarkMode} />}
-                label={isDarkMode ? "Light Mode" : "Dark Mode"}
-              />
+                <FormControlLabel
+                  control={<Switch checked={isDarkMode} onChange={toggleDarkMode} />}
+                  label={isDarkMode ? "Light Mode" : "Dark Mode"}
+                />
               </MenuItem>
               <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
             </Menu>
           </div>
           <h1 className="header">Duck Board</h1>
-          <ul>
-            <form onSubmit={handleSubmit}>
-              <input
-                className="add-text"
-                type="text"
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-                placeholder="Add item . . ."
-              />
-              <button className="add-button" type="submit">
-                +
-              </button>
-            </form>
-            {todos.map((todo, index) => (
-              <li
-                key={todo.id}
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, index)}
-              >
-                <input
-                  type="checkbox"
-                  checked={todo.done}
-                  onChange={() => handleToggle(todo.id)}
-                />
-                <input
-                  type="text"
-                  value={todo.text}
-                  onChange={(e) => handleEdit(todo.id, e.target.value)}
-                />
-                <button className="delete-button" onClick={() => handleDelete(todo.id)}>
-                  x
-                </button>
-              </li>
-            ))}
-          </ul>
+          {selectedBoard ? (
+            <Board
+              boardId={selectedBoard}
+              user={user}
+              goBack={() => setSelectedBoard(null)}
+            />
+          ) : (
+            <BoardsDashboard
+              boards={boards}
+              onAddBoard={handleAddBoard}
+              newBoardName={newBoardName}
+              setNewBoardName={setNewBoardName}
+              onSelectBoard={handleSelectBoard}
+            />
+          )}
         </div>
       ) : (
         <div className="signup-buttons">
