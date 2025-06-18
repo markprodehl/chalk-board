@@ -7,14 +7,25 @@ import "./Todo.css";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
-function BoardsDashboard({ boards, onAddBoard, newBoardName, setNewBoardName, onSelectBoard }) {
+function BoardsDashboard({
+  boards,
+  onAddBoard,
+  newBoardName,
+  setNewBoardName,
+  onSelectBoard,
+}) {
   const [editingBoardId, setEditingBoardId] = useState(null);
   const [updatedBoardName, setUpdatedBoardName] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentMenuBoardId, setCurrentMenuBoardId] = useState(null);
 
+  // Delete a board
   const handleDeleteBoard = (boardId) => {
-    if (window.confirm("Are you sure you want to delete this board? This action cannot be undone.")) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this board? This action cannot be undone."
+      )
+    ) {
       const userId = firebase.auth().currentUser.uid;
       const boardRef = firebase.database().ref(`boards/${userId}/${boardId}`);
       boardRef.remove();
@@ -22,12 +33,14 @@ function BoardsDashboard({ boards, onAddBoard, newBoardName, setNewBoardName, on
     }
   };
 
+  // Begin editing a board name
   const handleEditBoard = (boardId, currentName) => {
     setEditingBoardId(boardId);
     setUpdatedBoardName(currentName);
     handleCloseMenu();
   };
 
+  // Update the board name
   const handleUpdateBoardName = (boardId) => {
     if (!updatedBoardName.trim()) {
       alert("Board name cannot be empty!");
@@ -39,11 +52,13 @@ function BoardsDashboard({ boards, onAddBoard, newBoardName, setNewBoardName, on
     setEditingBoardId(null);
   };
 
+  // Handle right-click menu toggle
   const handleMenuClick = (event, boardId) => {
     setAnchorEl(event.currentTarget);
     setCurrentMenuBoardId(boardId);
   };
 
+  // Close right-click menu
   const handleCloseMenu = () => {
     setAnchorEl(null);
     setCurrentMenuBoardId(null);
@@ -51,74 +66,65 @@ function BoardsDashboard({ boards, onAddBoard, newBoardName, setNewBoardName, on
 
   return (
     <div>
-      {/* <h2 className="header">Your Boards</h2> */}
+      {/* Add new board form */}
       <form onSubmit={onAddBoard} className="form">
         <input
-            type="text"
-            value={newBoardName}
-            onChange={(e) => setNewBoardName(e.target.value)}
-            placeholder="New Board Name"
-            className="add-text new-board-name"
+          type="text"
+          value={newBoardName}
+          onChange={(e) => setNewBoardName(e.target.value)}
+          placeholder="New Board Name"
+          className="add-text new-board-name board-input-width" // updated to match board-tile width
         />
-
         <button type="submit" className="add-button">
-          Add Board
+          +
         </button>
       </form>
+
+      {/* List of boards */}
       <div className="boards-container">
         {boards.map((board) => (
-          <div
-            key={board.id}
-            className="board-tile"
-            style={{
-              backgroundColor: "var(--input-bg-color)",
-              color: "var(--text-color)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: "10px",
-              padding: "20px",
-              textAlign: "center",
-              position: "relative",
-              cursor: "pointer",
-            }}
-          >
+          <div key={board.id} className="board-tile">
             {editingBoardId === board.id ? (
-                <div>
-                    <input
-                    type="text"
-                    value={updatedBoardName}
-                    onChange={(e) => setUpdatedBoardName(e.target.value)}
-                    className="add-text"
-                    />
-                    <div className="board-edit-button-container">
-                    <button
-                        className="board-cancel-button"
-                        onClick={() => setEditingBoardId(null)}
-                        aria-label="Cancel"
-                    >
-                        <CloseIcon />
-                    </button>
-                    <button
-                        className="board-save-button"
-                        onClick={() => handleUpdateBoardName(board.id)}
-                        aria-label="Save"
-                    >
-                        <CheckIcon />
-                    </button>
-                    </div>
+              <div>
+                <input
+                  type="text"
+                  value={updatedBoardName}
+                  onChange={(e) => setUpdatedBoardName(e.target.value)}
+                  className="add-text board-input-width"
+                />
+                <div className="board-edit-button-container">
+                  <button
+                    className="board-cancel-button"
+                    onClick={() => setEditingBoardId(null)}
+                    aria-label="Cancel"
+                  >
+                    <CloseIcon />
+                  </button>
+                  <button
+                    className="board-save-button"
+                    onClick={() => handleUpdateBoardName(board.id)}
+                    aria-label="Save"
+                  >
+                    <CheckIcon />
+                  </button>
                 </div>
+              </div>
             ) : (
-            <div onClick={() => onSelectBoard(board.id)}>{board.name}</div>
+              <div onClick={() => onSelectBoard(board.id)}>{board.name}</div>
             )}
+
             <IconButton
               style={{
                 position: "absolute",
-                top: "10px",
+                top: "50%",
                 right: "10px",
+                transform: "translateY(-50%)",
               }}
               onClick={(event) => handleMenuClick(event, board.id)}
             >
               <MoreVertIcon />
             </IconButton>
+
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl) && currentMenuBoardId === board.id}

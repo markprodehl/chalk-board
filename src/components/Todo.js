@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { IconButton, Menu, MenuItem, Switch, FormControlLabel } from "@mui/material";
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  Switch,
+  FormControlLabel,
+  Drawer,
+} from "@mui/material";
 import MoreVert from "@mui/icons-material/MoreVert";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import "firebase/compat/auth";
@@ -8,9 +16,10 @@ import "./Todo.css";
 import Login from "./Login";
 import { ClipLoader } from "react-spinners";
 import firebaseConfig from "../config/firebaseConfig";
-import Board from "./Board"; // New component for individual boards
-import BoardsDashboard from "./BoardsDashboard"; // New component for boards dashboard
+import Board from "./Board";
+import BoardsDashboard from "./BoardsDashboard";
 
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref("boards");
 
@@ -22,15 +31,11 @@ function Todo() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isPanelOpen, setIsPanelOpen] = useState(true);
+  const drawerWidth = 250;
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
   const handleSignOut = () => {
     firebase.auth().signOut();
     setUser(null);
@@ -43,11 +48,7 @@ function Todo() {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
+      setUser(user || null);
       setLoading(false);
     });
   }, []);
@@ -62,9 +63,7 @@ function Todo() {
         }));
         setBoards(userBoards);
       });
-      return () => {
-        db.child(user.uid).off("value", boardListener);
-      };
+      return () => db.child(user.uid).off("value", boardListener);
     }
   }, [user]);
 
@@ -77,6 +76,19 @@ function Todo() {
 
   const handleSelectBoard = (boardId) => {
     setSelectedBoard(boardId);
+    setIsPanelOpen(false);
+  };
+
+  const handleGoBack = () => {
+    setSelectedBoard(null);
+    setIsPanelOpen(true);
+  };
+
+  // Automatically close dashboard when clicking on main content
+  const handleMainClick = () => {
+    if (isPanelOpen && selectedBoard) {
+      setIsPanelOpen(false);
+    }
   };
 
   return (
@@ -86,42 +98,78 @@ function Todo() {
           <ClipLoader loading={loading} size={50} color={"#007bff"} />
         </div>
       ) : user ? (
-        <div>
-          <div className="signOut">
-            <IconButton onClick={handleClick}>
-              <MoreVert />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem>
-                <FormControlLabel
-                  control={<Switch checked={isDarkMode} onChange={toggleDarkMode} />}
-                  label={isDarkMode ? "Light Mode" : "Dark Mode"}
-                />
-              </MenuItem>
-              <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-            </Menu>
+        <div className="app-container">
+          {/* Header Section with Menu */}
+          <div className="header-bar">
+            <h1 className="header">Fart Board</h1>
+            <div className="menu-align">
+              <IconButton onClick={handleClick}>
+                <MoreVert />
+              </IconButton>
+              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                <MenuItem>
+                  <FormControlLabel
+                    control={<Switch checked={isDarkMode} onChange={toggleDarkMode} />}
+                    label={isDarkMode ? "Light Mode" : "Dark Mode"}
+                  />
+                </MenuItem>
+                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+              </Menu>
+            </div>
           </div>
-          <h1 className="header">Duck Board</h1>
-          {selectedBoard ? (
-            <Board
-              boardId={selectedBoard}
-              user={user}
-              goBack={() => setSelectedBoard(null)}
-            />
-          ) : (
-            <BoardsDashboard
-              boards={boards}
-              onAddBoard={handleAddBoard}
-              newBoardName={newBoardName}
-              setNewBoardName={setNewBoardName}
-              onSelectBoard={handleSelectBoard}
-            />
-          )}
+
+          {/* Drawer Panel */}
+          <Drawer variant="persistent" anchor="left" open={isPanelOpen}>
+            <div
+              style={{
+                width: drawerWidth,
+                height: "100vh",
+                overflowY: "auto",
+                padding: "16px",
+                boxSizing: "border-box",
+              }}
+            >
+              <BoardsDashboard
+                boards={boards}
+                onAddBoard={handleAddBoard}
+                newBoardName={newBoardName}
+                setNewBoardName={setNewBoardName}
+                onSelectBoard={handleSelectBoard}
+              />
+            </div>
+          </Drawer>
+
+          {/* Main Content */}
+          <div
+            className="main-content"
+            onClick={handleMainClick}
+            style={{
+              marginLeft: isPanelOpen ? drawerWidth : 0,
+              transition: "margin 0.3s ease-in-out",
+              padding: "16px",
+            }}
+          >
+            {selectedBoard && !isPanelOpen && (
+              <IconButton
+                onClick={() => setIsPanelOpen(true)}
+                disableRipple
+                disableFocusRipple
+                disableTouchRipple
+                sx={{
+                  marginBottom: 0,
+                  marginLeft: "10px",
+                  padding: 0,
+                }}
+                title="Open Boards Panel"
+              >
+                <MenuOpenIcon />
+              </IconButton>
+            )}
+
+            {selectedBoard ? (
+              <Board boardId={selectedBoard} user={user} goBack={handleGoBack} />
+            ) : null}
+          </div>
         </div>
       ) : (
         <div className="signup-buttons">

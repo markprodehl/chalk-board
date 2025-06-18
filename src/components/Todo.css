@@ -24,56 +24,52 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.header {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-  font-family: 'Chalkboard SE', sans-serif;
-}
-
-form {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 20px 10px;
-}
-
-input[type="text"] {
-  margin-right: 10px;
+/* Shared input styling */
+input[type="text"],
+input.add-text {
   background-color: var(--input-bg-color);
   color: var(--text-color);
   font-size: 1rem;
-  border: none; /* Removed border-bottom */
-  flex-grow: 1;
   outline: none;
+  border: none;
   font-family: 'Chalkboard SE', sans-serif;
+  flex-grow: 1;
+  margin-right: 10px;
 }
 
 input[type="text"]:hover {
   color: grey;
 }
 
-.add-button {
-  background-color: var(--button-bg-color);
-  color: var(--text-color);
-  margin-left: 10px;
-  padding: 6px 12px;
+/* Add visible line for form entry inputs */
+input.new-board-name,
+input.new-todo {
+  border-bottom: 1px solid var(--text-color);
+  border-radius: 0;
+}
+
+/* Hide line for todos */
+input[type="text"]:not(.new-board-name):not(.new-todo) {
+  border-bottom: none;
+}
+
+/* Buttons */
+.add-button,
+.delete-button {
   border: none;
   border-radius: 5px;
   font-family: 'Chalkboard SE', sans-serif;
   font-size: 1rem;
+  padding: 6px 12px;
   cursor: pointer;
+}
 
-  display: flex;             /* Enable flexbox */
-  justify-content: center;   /* Center text horizontally */
-  align-items: center;       /* Center text vertically */
+.add-button {
+  background-color: var(--button-bg-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .add-button:hover {
@@ -81,15 +77,9 @@ input[type="text"]:hover {
 }
 
 .delete-button {
-  margin-left: 10px;
-  padding: 6px 12px;
   background-color: var(--delete-button-bg-color);
   color: var(--text-color);
-  border: none;
-  border-radius: 5px;
-  font-family: 'Chalkboard SE', sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
+  margin-left: 10px;
 }
 
 .delete-button:hover {
@@ -118,7 +108,31 @@ input[type="checkbox"]:checked + input[type="text"] {
   text-decoration: line-through;
 }
 
-/* Menu */
+/* Spinner */
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  font-family: 'Chalkboard SE', sans-serif;
+}
+
+/* Form layout */
+form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 10px;
+}
+
+/* Menu styling */
 .MuiSvgIcon-root {
   color: var(--text-color);
 }
@@ -133,10 +147,47 @@ input[type="checkbox"]:checked + input[type="text"] {
   background-color: var(--button-hover-bg-color) !important;
 }
 
+/* Header bar layout with aligned menu */
+.header-bar {
+  display: flex;
+  justify-content: center; /* center items horizontally */
+  align-items: center;
+  position: relative;
+  margin: 20px 0;
+  height: 60px;
+}
+
+/* Absolute centering of header text */
+.header {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Chalkboard SE', sans-serif;
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Right-aligned menu icon */
+.menu-align {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+
+
+/* Board editor */
+.board-input-width {
+  width: 100%;
+  max-width: 210px; /* Or match your .board-tile width exactly */
+  box-sizing: border-box;
+}
+
 .board-edit-button-container {
   display: flex;
-  justify-content: center; /* Center-align the buttons horizontally */
-  gap: 5px; /* Reduce the spacing between the buttons */
+  justify-content: center;
+  gap: 5px;
   margin-top: 10px;
 }
 
@@ -166,53 +217,51 @@ input[type="checkbox"]:checked + input[type="text"] {
   color: darkred;
 }
 
+/* Boards container and tile */
 .boards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive columns */
-  gap: 15px; /* Add spacing between grid items */
-  padding: 10px; /* Add padding to the container */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px; /* gap between tiles*/
+  padding: 10px;
+  max-width: 250px; /* narrower panel */
+  margin: auto; /* center the panel if needed */
 }
 
 .board-tile {
   background: var(--input-bg-color);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  padding: 15px;
+  padding: 15px !important; /* height of the tile */
   text-align: center;
   cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
-  transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effect */
+  position: relative;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .board-tile:hover {
-  transform: scale(1.05); /* Slightly enlarge on hover */
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Increase shadow on hover */
+  transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
-
 
 .board-tile h3 {
   margin: 0;
   font-size: 1rem;
   font-family: 'Chalkboard SE', sans-serif;
-  word-wrap: break-word; /* Ensure board names wrap on smaller screens */
+  word-wrap: break-word;
 }
 
 .light-mode .board-tile {
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Add a line underneath specific inputs */
-input.new-board-name,
-input.new-todo {
-  border-bottom: 1px solid var(--text-color); /* Add a line underneath */
-  border-radius: 0; /* Ensure the line appears only at the bottom */
+/* Drawer */
+.MuiDrawer-paper {
+  background-color: var(--input-bg-color) !important;
+  color: var(--text-color) !important;
 }
 
-/* Remove line for other inputs (like Todo list fields) */
-input[type="text"]:not(.new-board-name):not(.new-todo) {
-  border-bottom: none;
-}
-
+/* Mobile tweaks */
 @media (max-width: 768px) {
   .board-tile {
     padding: 10px;
@@ -225,7 +274,6 @@ input[type="text"]:not(.new-board-name):not(.new-todo) {
   }
 
   .board-tile h3 {
-    font-size: 0.9rem; /* Adjust font size for smaller screens */
+    font-size: 0.9rem;
   }
 }
-
