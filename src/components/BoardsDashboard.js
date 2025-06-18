@@ -133,7 +133,7 @@ function BoardsDashboard({
             value={newBoardName}
             onChange={(e) => setNewBoardName(e.target.value)}
             placeholder="New Board Name"
-            className="add-text new-board-name board-input-width" // updated to match board-tile width
+            className="add-text new-board-name board-input-width"
           />
           <button type="submit" className="add-button">
             +
