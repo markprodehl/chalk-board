@@ -1,16 +1,16 @@
 # Chalk Board
 
-Chalk Board is a Realtime Todo application built with React, Firestore and Firebase Authentication.
+Chalk Board is a real-time task manager built with React, Firestore, and Firebase Authentication.
 
 ## Features
 
-- Realtime updates of todos using Firestore Realtime Database.
+- Real-time updates of todos using Firestore Realtime Database.
 - Todo items are draggable for easy sorting.
 - User authentication using Firebase authentication.
   - Email and Password Authentication.
   - Google Authentication.
 - SignUp and Login functionality for users.
-- Persistent storage of user todos, todos are not lost even after refreshing.
+- Persistent storage of user tasks.
 - Each todo item can be marked as completed, edited, or deleted.
 - Service worker registration for PWA features.
 
@@ -42,7 +42,7 @@ These instructions will get you a copy of the project up and running on your loc
     npm install
     ```
 
-4. Firebase Configuration - In the src directory create a new `config` folder and inside of that make a file `firebaseConfig`. You will store all your environment variables in this file. 
+4. Firebase Configuration - In the src directory, create a new `config` folder and inside of that, make a file `firebaseConfig`. You will store all your environment variables in this file. 
 **IMPORTANT**: Do not commit or share these secrets publicly. Be sure to include `firebaseConfig` in your `.gitignore` file like this `/src/config/firebaseConfig.js`
 
     ```
@@ -74,9 +74,9 @@ This project can be deployed on Google Hosting or any other static hosting you p
 
 ## Security
 
-This project uses Firebase for user authentication and Firestore for database. All the security information including API keys are stored in a firebaseConfig.js which is not committed to the repository. Therefore, you must provide your own Firebase configuration for the project to work.
+This project uses Firebase for user authentication and Firestore for the database. All the security information, including API keys, are stored in a firebaseConfig.js, which is not committed to the repository. Therefore, you must provide your own Firebase configuration for the project to work.
 
-Note: Remember to never commit sensitive information to the repository. It should be stored in environment variables or a separate config file which is ignored by git.
+Note: Remember never to commit sensitive information to the repository. It should be stored in environment variables or a separate config file, which is ignored by git.
 
 ## Contributing
 
