@@ -23,7 +23,7 @@ body {
   color: var(--text-color);
   font-family: Arial, sans-serif;
 }
- 
+
 /* Shared input styling */
 input[type="text"],
 input.add-text {
@@ -74,7 +74,7 @@ input[type="text"]:not(.new-board-name):not(.new-todo) {
 }
 
 .add-button:hover {
-  background-color: #33bb3a;
+  background-color: var(--button-hover-bg-color);
 }
 
 .delete-button:hover {
@@ -176,8 +176,6 @@ form {
   align-items: center;
 }
 
-
-
 /* Board editor */
 .board-input-width {
   width: 100%;
@@ -218,16 +216,17 @@ form {
   color: darkred;
 }
 
-/* Boards container and tile */
+/* Boards container and tile (stacking layout on all screens) */
 .boards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px; /* gap between tiles*/
+  display: flex;
+  flex-direction: column; /* Stack the tiles */
+  gap: 15px; /* gap between tiles */
   padding: 10px;
-  max-width: 250px; /* narrower panel */
-  margin: auto; /* center the panel if needed */
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* Board tile styling */
 .board-tile {
   background: var(--bg-color);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -266,6 +265,11 @@ form {
 @media (max-width: 768px) {
   .board-tile {
     padding: 10px;
+  }
+
+  /* Keep stacking the tiles even on mobile */
+  .boards-container {
+    flex-direction: column; /* Ensure tiles stack on smaller screens */
   }
 }
 

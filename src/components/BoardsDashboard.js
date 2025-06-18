@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import firebase from "firebase/compat/app";
-import "firebase/compat/database";
+import "./Todo.css";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import "./Todo.css";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -124,21 +123,22 @@ function BoardsDashboard({
               </MenuItem>
             </Menu>
           </div>
-          
         ))}
       </div>
-       <form onSubmit={onAddBoard} className="form">
-          <input
-            type="text"
-            value={newBoardName}
-            onChange={(e) => setNewBoardName(e.target.value)}
-            placeholder="New Board Name"
-            className="add-text new-board-name board-input-width"
-          />
-          <button type="submit" className="add-button">
-            +
-          </button>
-        </form>
+
+      {/* New board input aligned with board tile width */}
+      <form onSubmit={onAddBoard} className="form">
+        <input
+          type="text"
+          value={newBoardName}
+          onChange={(e) => setNewBoardName(e.target.value)}
+          placeholder="New Board Name"
+          className="add-text new-board-name board-input-width"
+        />
+        <button type="submit" className="add-button">
+          +
+        </button>
+      </form>
     </div>
   );
 }
