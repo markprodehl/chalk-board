@@ -22,6 +22,17 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Add a unique class to ensure Fart Board header is styled and visible */
+.header-fart-board {
+  text-align: center;
+  font-size: 2rem;
+  font-family: 'Chalkboard SE', sans-serif;
+  color: var(--text-color); /* Ensure visibility based on the theme */
 }
 
 /* Shared input styling */
@@ -267,9 +278,26 @@ form {
     padding: 10px;
   }
 
-  /* Keep stacking the tiles even on mobile */
-  .boards-container {
-    flex-direction: column; /* Ensure tiles stack on smaller screens */
+  /* Ensure the boards dashboard takes 100% width */
+  .boards-dashboard-container {
+    width: 100%;
+    padding: 0;  /* Remove any unwanted padding */
+  }
+
+  .board-tile {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ensure that the drawer takes full width on mobile */
+  .MuiDrawer-paper {
+    width: 100% !important; /* Ensure the drawer is full width on mobile */
+    box-sizing: border-box;
+  }
+
+  /* Fix possible overlap by ensuring the container doesn't scroll horizontally */
+  body {
+    overflow-x: hidden;
   }
 }
 

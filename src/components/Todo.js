@@ -117,7 +117,11 @@ function Todo() {
         <div className="app-container">
           {/* Header Section with Menu */}
           <div className="header-bar">
-            <h1 className="header">Fart Board</h1>
+            {selectedBoard ? (
+              <h1 className="header">{boards.find(board => board.id === selectedBoard)?.name}</h1> // Active board name
+            ) : (
+              <h1 className="header"></h1>
+            )}
             <div className="menu-align">
               <IconButton onClick={handleClick}>
                 <MoreVert />
