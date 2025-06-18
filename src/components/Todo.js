@@ -32,7 +32,23 @@ function Todo() {
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(true);
-  const drawerWidth = 250;
+  const [drawerWidth, setDrawerWidth] = useState(400);  // default width for large screens
+
+  // Handle window resize for responsive drawer width
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 600) {  // Mobile portrait view (you can adjust this breakpoint)
+        setDrawerWidth(window.innerWidth);  // Fill the screen width on mobile
+      } else {
+        setDrawerWidth(400);  // Default width for larger screens
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();  // Initial call to set the correct drawer width
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
