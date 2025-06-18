@@ -66,20 +66,6 @@ function BoardsDashboard({
 
   return (
     <div>
-      {/* This puts Add New Board form at the top of the boards list */}
-      {/* <form onSubmit={onAddBoard} className="form">
-        <input
-          type="text"
-          value={newBoardName}
-          onChange={(e) => setNewBoardName(e.target.value)}
-          placeholder="New Board Name"
-          className="add-text new-board-name board-input-width" // updated to match board-tile width
-        />
-        <button type="submit" className="add-button">
-          +
-        </button>
-      </form> */}
-
       {/* List of boards */}
       <div className="boards-container">
         {boards.map((board) => (
