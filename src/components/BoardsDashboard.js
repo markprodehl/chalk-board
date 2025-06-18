@@ -65,6 +65,8 @@ function BoardsDashboard({
 
   return (
     <div>
+      {/* Header for Fart Board */}
+      <h1 className="header-fart-board">Fart Board</h1>
       {/* List of boards */}
       <div className="boards-container">
         {boards.map((board) => (
