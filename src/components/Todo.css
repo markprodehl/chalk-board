@@ -113,10 +113,13 @@ input[type="checkbox"]:checked + input[type="text"] {
 }
 
 /* Header */
+.header-bar {
+  margin-bottom: 15px !important;
+}
+
 .header {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
   font-family: 'Chalkboard SE', sans-serif;
 }
 
@@ -131,6 +134,7 @@ form {
 /* Menu styling */
 .MuiSvgIcon-root {
   color: var(--text-color);
+  margin-bottom: 15px;
 }
 
 .MuiMenu-paper {
