@@ -3,24 +3,26 @@
   justify-content: center;
   margin-bottom: 0;
   font-family: 'Chalkboard SE', sans-serif;
-  color: rgb(205, 203, 203)
+  color: rgb(205, 203, 203);
+  width: 100%;
 }
 
 .auth-fields {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center; 
   margin-top: 200px;
 }
 
 .auth-input {
-  justify-content: center;
   width: 220px;
   height: 25px;
   margin-bottom: 10px;
   padding: 6px;
   border: none;
   border-radius: 5px;
+  text-align: center; /* Ensures text is centered inside input fields */
 }
 
 .password-input {

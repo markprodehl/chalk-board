@@ -12,10 +12,9 @@
   --bg-color: #eef5f5;
   --text-color: #000;
   --text-strikethrough-color: #56a15d;
-  --button-hover-bg-color: #6fac75;
+  --button-hover-bg-color: #ced4d4;
   /* --input-bg-color: #eef5f5; */
   /* --delete-button-bg-color: #f4942e; */
-  /* --delete-button-hover-bg-color: #f5a551; */
 }
 
 body {
@@ -25,6 +24,10 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.main-content {
+  padding: 0px !important;
 }
 
 /* Add a unique class to ensure Fart Board header is styled and visible */
@@ -59,44 +62,25 @@ input.new-todo {
   border-radius: 0;
 }
 
+.new-todo {
+  padding-bottom: 5px;
+}
+
+.add-board {
+  border: 1.5px solid grey !important;
+  border-radius: 10px !important;
+  padding: 10px;
+  max-width: 100% !important;
+}
+
 /* Hide line for todos */
 input[type="text"]:not(.new-board-name):not(.new-todo) {
   border-bottom: none;
 }
 
-/* Buttons */
-.add-button,
-.delete-button {
-  background-color: var(--bg-color);
-  border-radius: 5px;
-  font-family: 'Chalkboard SE', sans-serif;
-  font-size: 1rem;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 1.2rem;
+.list-item {
+  padding: 10px 10px 5px;
 }
-
-.add-button {
-  color: var(--text-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 900;
-}
-
-.add-button:hover {
-  background-color: var(--button-hover-bg-color);
-}
-
-.delete-button:hover {
-  color: red;
-}
-
-.delete-button {
-  color: #f4942e;
-  border: none;
-}
-
 
 ul {
   padding: 0;
@@ -310,3 +294,65 @@ form {
     font-size: 0.9rem;
   }
 }
+
+/* New input and button alignment */
+.input-button-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.add-text.add-board,
+.add-button {
+  height: 40px;  /* Adjust height to match */
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.add-text.add-board {
+  flex-grow: 1;  /* Allow the input to take up available space */
+  margin-right: 10px;  /* Space between the input and button */
+}
+
+/* Buttons */
+.add-button,
+.delete-button {
+  background-color: var(--bg-color);
+  border-radius: 5px;
+  font-family: 'Chalkboard SE', sans-serif;
+  font-size: 1rem;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.delete-button:hover {
+  color: red;
+}
+
+.delete-button {
+  color: #f4942e;
+  border: none;
+}
+
+
+.add-button {
+  width: 40px;  /* Ensure the button is consistent with input height */
+  background-color: var(--bg-color);
+  color: rgb(4, 183, 4);
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+
+/* Add button hover effects */
+.add-button:hover {
+  color: rgb(5, 149, 5);
+  background-color: var(--bg-color);
+}
+
