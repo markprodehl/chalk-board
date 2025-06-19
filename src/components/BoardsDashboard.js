@@ -130,16 +130,18 @@ function BoardsDashboard({
 
       {/* New board input aligned with board tile width */}
       <form onSubmit={onAddBoard} className="form">
-        <input
-          type="text"
-          value={newBoardName}
-          onChange={(e) => setNewBoardName(e.target.value)}
-          placeholder="New Board Name"
-          className="add-text new-board-name board-input-width"
-        />
-        <button type="submit" className="add-button">
-          +
-        </button>
+        <div className="input-button-container">
+          <input
+            type="text"
+            value={newBoardName}
+            onChange={(e) => setNewBoardName(e.target.value)}
+            placeholder="New Board Name"
+            className="add-text add-board new-board-name board-input-width"
+          />
+          <button type="submit" className="add-button">
+            +
+          </button>
+        </div>
       </form>
     </div>
   );
