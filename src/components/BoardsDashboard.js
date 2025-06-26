@@ -103,7 +103,7 @@ function BoardsDashboard({
             <IconButton
               style={{
                 position: "absolute",
-                top: "50%",
+                top: "65%",
                 right: "10px",
                 transform: "translateY(-50%)",
               }}
