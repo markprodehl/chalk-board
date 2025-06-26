@@ -30,7 +30,7 @@ function Board({ boardId, user, goBack }) {
 
   return (
     <div>
-      {/* <form onSubmit={handleAddTodo} className="form">
+      <form onSubmit={handleAddTodo} className="form">
         <input
           type="text"
           value={newTodo}
@@ -39,7 +39,7 @@ function Board({ boardId, user, goBack }) {
           className="add-text new-todo"
         />
         <button type="submit" className="add-button">+</button>
-      </form> */}
+      </form>
       <ul>
         {todos.map((todo) => (
           <li key={todo.id} className="list-item">
@@ -78,7 +78,7 @@ function Board({ boardId, user, goBack }) {
           </li>
         ))}
       </ul>
-        <form onSubmit={handleAddTodo} className="form">
+        {/* <form onSubmit={handleAddTodo} className="form">
         <input
           type="text"
           value={newTodo}
@@ -87,7 +87,7 @@ function Board({ boardId, user, goBack }) {
           className="add-text new-todo"
         />
         <button type="submit" className="add-button">+</button>
-      </form>
+      </form> */}
     </div>
   );
 }
