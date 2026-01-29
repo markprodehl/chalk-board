@@ -25,3 +25,11 @@ yarn-error.log*
 #config
 /src/config/firebaseConfig.js
 
+
+# Firebase logs/cache
+.firebase/
+firebase-debug.log
+
+# Firebase logs/cache
+.firebase/
+firebase-debug.log
