@@ -29,3 +29,7 @@ yarn-error.log*
 # Firebase logs/cache
 .firebase/
 firebase-debug.log
+
+# Firebase logs/cache
+.firebase/
+firebase-debug.log
