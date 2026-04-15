@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "./Todo.css";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 function Board({ boardId, user, goBack }) {
   const [todos, setTodos] = useState([]);
@@ -10,10 +11,12 @@ function Board({ boardId, user, goBack }) {
     const boardRef = firebase.database().ref(`boards/${user.uid}/${boardId}/todos`);
     const todoListener = boardRef.on("value", (snapshot) => {
       const data = snapshot.val();
-      const boardTodos = Object.keys(data || {}).map((key) => ({
-        id: key,
-        ...data[key],
-      }));
+      const boardTodos = Object.keys(data || {})
+        .map((key) => ({
+          id: key,
+          ...data[key],
+        }))
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
       setTodos(boardTodos);
     });
 
@@ -24,8 +27,28 @@ function Board({ boardId, user, goBack }) {
     e.preventDefault();
     if (!newTodo.trim()) return;
     const boardRef = firebase.database().ref(`boards/${user.uid}/${boardId}/todos`);
-    boardRef.push({ text: newTodo, done: false });
+    const newTodoRef = boardRef.push();
+    newTodoRef.set({ text: newTodo, done: false, order: todos.length });
     setNewTodo("");
+  };
+
+  const handleTodoDragEnd = (result) => {
+    if (!result.destination) return;
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
+    if (sourceIndex === destinationIndex) return;
+
+    const updatedTodos = Array.from(todos);
+    const [movedTodo] = updatedTodos.splice(sourceIndex, 1);
+    updatedTodos.splice(destinationIndex, 0, movedTodo);
+    setTodos(updatedTodos);
+
+    updatedTodos.forEach((todo, index) => {
+      firebase
+        .database()
+        .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
+        .update({ order: index });
+    });
   };
 
   return (
@@ -40,54 +63,65 @@ function Board({ boardId, user, goBack }) {
         />
         <button type="submit" className="add-button">+</button>
       </form>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id} className="list-item">
-            <input
-              type="checkbox"
-              checked={todo.done}
-              onChange={() =>
-                firebase
-                  .database()
-                  .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
-                  .update({ done: !todo.done })
-              }
-            />
-            <input
-              type="text"
-              value={todo.text}
-              onChange={(e) =>
-                firebase
-                  .database()
-                  .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
-                  .update({ text: e.target.value })
-              }
-              className="add-text"
-            />
-            <button
-              className="delete-button"
-              onClick={() =>
-                firebase
-                  .database()
-                  .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
-                  .remove()
-              }
-            >
-              x
-            </button>
-          </li>
-        ))}
-      </ul>
-        {/* <form onSubmit={handleAddTodo} className="form">
-        <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="New Item"
-          className="add-text new-todo"
-        />
-        <button type="submit" className="add-button">+</button>
-      </form> */}
+      <DragDropContext onDragEnd={handleTodoDragEnd}>
+        <Droppable droppableId="todos-droppable">
+          {(provided) => (
+            <ul ref={provided.innerRef} {...provided.droppableProps}>
+              {todos.map((todo, index) => (
+                <Draggable key={todo.id} draggableId={String(todo.id)} index={index}>
+                  {(provided, snapshot) => (
+                    <li
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      style={provided.draggableProps.style}
+                      className={`list-item ${snapshot.isDragging ? "dragging" : ""}`}
+                    >
+                      <div
+                        className="drag-handle-invisible"
+                        {...provided.dragHandleProps}
+                        aria-label="Drag todo"
+                      />
+                      <input
+                        type="checkbox"
+                        checked={todo.done}
+                        onChange={() =>
+                          firebase
+                            .database()
+                            .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
+                            .update({ done: !todo.done })
+                        }
+                      />
+                      <input
+                        type="text"
+                        value={todo.text}
+                        onChange={(e) =>
+                          firebase
+                            .database()
+                            .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
+                            .update({ text: e.target.value })
+                        }
+                        className="add-text todo-text-input"
+                      />
+                      <button
+                        className="delete-button"
+                        onClick={() =>
+                          firebase
+                            .database()
+                            .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
+                            .remove()
+                        }
+                      >
+                        x
+                      </button>
+                    </li>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 }

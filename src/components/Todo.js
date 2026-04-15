@@ -73,10 +73,12 @@ function Todo() {
     if (user) {
       const boardListener = db.child(user.uid).on("value", (snapshot) => {
         const data = snapshot.val();
-        const userBoards = Object.keys(data || {}).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
+        const userBoards = Object.keys(data || {})
+          .map((key) => ({
+            id: key,
+            ...data[key],
+          }))
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
         setBoards(userBoards);
       });
       return () => db.child(user.uid).off("value", boardListener);
@@ -86,8 +88,25 @@ function Todo() {
   const handleAddBoard = (e) => {
     e.preventDefault();
     if (!newBoardName.trim() || !user) return;
-    db.child(user.uid).push({ name: newBoardName, todos: {} });
+    const boardRef = db.child(user.uid).push();
+    boardRef.set({ name: newBoardName, todos: {}, order: Date.now() });
     setNewBoardName("");
+  };
+
+  const handleReorderBoards = (result) => {
+    if (!result.destination) return;
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
+    if (sourceIndex === destinationIndex) return;
+
+    const updatedBoards = Array.from(boards);
+    const [movedBoard] = updatedBoards.splice(sourceIndex, 1);
+    updatedBoards.splice(destinationIndex, 0, movedBoard);
+    setBoards(updatedBoards);
+
+    updatedBoards.forEach((board, index) => {
+      db.child(user.uid).child(board.id).update({ order: index });
+    });
   };
 
   const handleSelectBoard = (boardId) => {
@@ -118,9 +137,9 @@ function Todo() {
           {/* Header Section with Menu */}
           <div className="header-bar">
             {selectedBoard ? (
-              <h1 className="header">{boards.find(board => board.id === selectedBoard)?.name}</h1> // Active board name
+              <h1 className="header">{boards.find(board => board.id === selectedBoard)?.name}</h1>
             ) : (
-              <h1 className="header"></h1>
+              <h1 className="header" aria-hidden="true">&nbsp;</h1>
             )}
             <div className="menu-align">
               <IconButton onClick={handleClick}>
@@ -139,7 +158,7 @@ function Todo() {
           </div>
 
           {/* Drawer Panel */}
-          <Drawer variant="persistent" anchor="left" open={isPanelOpen}>
+          <Drawer variant="persistent" anchor="left" open={isPanelOpen} disablePortal>
             <div
               style={{
                 width: drawerWidth,
@@ -155,6 +174,7 @@ function Todo() {
                 newBoardName={newBoardName}
                 setNewBoardName={setNewBoardName}
                 onSelectBoard={handleSelectBoard}
+                onBoardDragEnd={handleReorderBoards}
               />
             </div>
           </Drawer>

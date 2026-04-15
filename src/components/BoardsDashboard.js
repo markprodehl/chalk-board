@@ -5,6 +5,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 function BoardsDashboard({
   boards,
@@ -12,6 +13,7 @@ function BoardsDashboard({
   newBoardName,
   setNewBoardName,
   onSelectBoard,
+  onBoardDragEnd,
 }) {
   const [editingBoardId, setEditingBoardId] = useState(null);
   const [updatedBoardName, setUpdatedBoardName] = useState("");
@@ -64,69 +66,89 @@ function BoardsDashboard({
   };
 
   return (
-    <div>
-      {/* Header for Fart Board */}
-      <h1 className="header-fart-board">Fart Board</h1>
-      {/* List of boards */}
-      <div className="boards-container">
-        {boards.map((board) => (
-          <div key={board.id} className="board-tile">
-            {editingBoardId === board.id ? (
-              <div>
-                <input
-                  type="text"
-                  value={updatedBoardName}
-                  onChange={(e) => setUpdatedBoardName(e.target.value)}
-                  className="add-text board-input-width"
-                />
-                <div className="board-edit-button-container">
-                  <button
-                    className="board-cancel-button"
-                    onClick={() => setEditingBoardId(null)}
-                    aria-label="Cancel"
-                  >
-                    <CloseIcon />
-                  </button>
-                  <button
-                    className="board-save-button"
-                    onClick={() => handleUpdateBoardName(board.id)}
-                    aria-label="Save"
-                  >
-                    <CheckIcon />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div onClick={() => onSelectBoard(board.id)}>{board.name}</div>
-            )}
-
-            <IconButton
-              style={{
-                position: "absolute",
-                top: "65%",
-                right: "10px",
-                transform: "translateY(-50%)",
-              }}
-              onClick={(event) => handleMenuClick(event, board.id)}
+    <DragDropContext onDragEnd={onBoardDragEnd}>
+      <div>
+        {/* Header for Fart Board */}
+        <h1 className="header-fart-board">Fart Board</h1>
+        {/* List of boards */}
+        <Droppable droppableId="boards-droppable">
+          {(provided) => (
+            <div
+              className="boards-container"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
             >
-              <MoreVertIcon />
-            </IconButton>
+              {boards.map((board, index) => (
+                <Draggable key={board.id} draggableId={String(board.id)} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={provided.draggableProps.style}
+                      className={`board-tile ${snapshot.isDragging ? "dragging" : ""}`}
+                    >
+                      {editingBoardId === board.id ? (
+                        <div>
+                          <input
+                            type="text"
+                            value={updatedBoardName}
+                            onChange={(e) => setUpdatedBoardName(e.target.value)}
+                            className="add-text board-input-width"
+                          />
+                          <div className="board-edit-button-container">
+                            <button
+                              className="board-cancel-button"
+                              onClick={() => setEditingBoardId(null)}
+                              aria-label="Cancel"
+                            >
+                              <CloseIcon />
+                            </button>
+                            <button
+                              className="board-save-button"
+                              onClick={() => handleUpdateBoardName(board.id)}
+                              aria-label="Save"
+                            >
+                              <CheckIcon />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div onClick={() => onSelectBoard(board.id)}>{board.name}</div>
+                      )}
 
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl) && currentMenuBoardId === board.id}
-              onClose={handleCloseMenu}
-            >
-              <MenuItem onClick={() => handleEditBoard(board.id, board.name)}>
-                Edit
-              </MenuItem>
-              <MenuItem onClick={() => handleDeleteBoard(board.id)}>
-                Delete
-              </MenuItem>
-            </Menu>
-          </div>
-        ))}
-      </div>
+                      <IconButton
+                        style={{
+                          position: "absolute",
+                          top: "65%",
+                          right: "10px",
+                          transform: "translateY(-50%)",
+                        }}
+                        onClick={(event) => handleMenuClick(event, board.id)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && currentMenuBoardId === board.id}
+                        onClose={handleCloseMenu}
+                      >
+                        <MenuItem onClick={() => handleEditBoard(board.id, board.name)}>
+                          Edit
+                        </MenuItem>
+                        <MenuItem onClick={() => handleDeleteBoard(board.id)}>
+                          Delete
+                        </MenuItem>
+                      </Menu>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
 
       {/* New board input aligned with board tile width */}
       <form onSubmit={onAddBoard} className="form">
@@ -144,6 +166,7 @@ function BoardsDashboard({
         </div>
       </form>
     </div>
+  </DragDropContext>
   );
 }
 
