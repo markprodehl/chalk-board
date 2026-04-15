@@ -109,20 +109,77 @@ function Todo() {
     });
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.history.replaceState(
+        { selectedBoard: null, isPanelOpen: true },
+        "",
+        window.location.pathname
+      );
+
+      const handlePopState = (event) => {
+        const state = event.state;
+        if (state) {
+          setSelectedBoard(state.selectedBoard || null);
+          setIsPanelOpen(state.isPanelOpen ?? true);
+        } else {
+          setSelectedBoard(null);
+          setIsPanelOpen(true);
+        }
+      };
+
+      window.addEventListener("popstate", handlePopState);
+      return () => window.removeEventListener("popstate", handlePopState);
+    }
+    return undefined;
+  }, []);
+
   const handleSelectBoard = (boardId) => {
     setSelectedBoard(boardId);
     setIsPanelOpen(false);
+    if (typeof window !== "undefined") {
+      window.history.pushState(
+        { selectedBoard: boardId, isPanelOpen: false },
+        "",
+        window.location.pathname
+      );
+    }
   };
 
   const handleGoBack = () => {
     setSelectedBoard(null);
     setIsPanelOpen(true);
+    if (typeof window !== "undefined") {
+      window.history.pushState(
+        { selectedBoard: null, isPanelOpen: true },
+        "",
+        window.location.pathname
+      );
+    }
+  };
+
+  const openBoardPanel = () => {
+    setIsPanelOpen(true);
+    if (typeof window !== "undefined") {
+      window.history.pushState(
+        { selectedBoard, isPanelOpen: true },
+        "",
+        window.location.pathname
+      );
+    }
   };
 
   // Automatically close dashboard when clicking on main content
   const handleMainClick = () => {
     if (isPanelOpen && selectedBoard) {
       setIsPanelOpen(false);
+      if (typeof window !== "undefined") {
+        window.history.pushState(
+          { selectedBoard, isPanelOpen: false },
+          "",
+          window.location.pathname
+        );
+      }
     }
   };
 
@@ -191,7 +248,7 @@ function Todo() {
           >
             {selectedBoard && !isPanelOpen && (
               <IconButton
-                onClick={() => setIsPanelOpen(true)}
+                onClick={openBoardPanel}
                 disableRipple
                 disableFocusRipple
                 disableTouchRipple
