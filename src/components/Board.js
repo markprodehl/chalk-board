@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "./Todo.css";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 function Board({ boardId, user, goBack }) {
   const [todos, setTodos] = useState([]);
@@ -73,14 +73,9 @@ function Board({ boardId, user, goBack }) {
                     <li
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      style={provided.draggableProps.style}
+                      style={{ ...provided.draggableProps.style, userSelect: "none" }}
                       className={`list-item ${snapshot.isDragging ? "dragging" : ""}`}
                     >
-                      <div
-                        className="drag-handle-invisible"
-                        {...provided.dragHandleProps}
-                        aria-label="Drag todo"
-                      />
                       <input
                         type="checkbox"
                         checked={todo.done}
@@ -90,6 +85,9 @@ function Board({ boardId, user, goBack }) {
                             .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
                             .update({ done: !todo.done })
                         }
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
                       />
                       <input
                         type="text"
@@ -101,15 +99,27 @@ function Board({ boardId, user, goBack }) {
                             .update({ text: e.target.value })
                         }
                         className="add-text todo-text-input"
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
                       />
+                      <span
+                        className="drag-handle"
+                        {...provided.dragHandleProps}
+                        aria-label="Drag todo"
+                      >
+                        ☰
+                      </span>
                       <button
                         className="delete-button"
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.stopPropagation();
                           firebase
                             .database()
                             .ref(`boards/${user.uid}/${boardId}/todos/${todo.id}`)
-                            .remove()
-                        }
+                            .remove();
+                        }}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
                       >
                         x
                       </button>

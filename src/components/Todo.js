@@ -158,7 +158,7 @@ function Todo() {
           </div>
 
           {/* Drawer Panel */}
-          <Drawer variant="persistent" anchor="left" open={isPanelOpen} disablePortal>
+          <Drawer variant="persistent" anchor="left" open={isPanelOpen}>
             <div
               style={{
                 width: drawerWidth,
