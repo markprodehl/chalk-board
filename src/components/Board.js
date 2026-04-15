@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "./Todo.css";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 function Board({ boardId, user, goBack }) {
   const [todos, setTodos] = useState([]);
