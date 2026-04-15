@@ -93,6 +93,29 @@ li {
   justify-content: space-between;
   padding: 10px;
   font-family: 'Chalkboard SE', sans-serif;
+  position: relative;
+}
+
+.list-item {
+  cursor: default;
+  touch-action: pan-y;
+  gap: 10px;
+}
+
+.drag-handle-invisible {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 45px;
+  height: 100%;
+  opacity: 0;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.todo-text-input {
+  flex: 1;
+  min-width: 0;
 }
 
 input[type="checkbox"] {
@@ -232,7 +255,8 @@ form {
   border-radius: 10px;
   padding: 15px !important; /* height of the tile */
   text-align: center;
-  cursor: pointer;
+  cursor: grab;
+  touch-action: manipulation;
   position: relative;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -241,6 +265,12 @@ form {
 .board-tile:hover {
   transform: scale(1.05);
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.board-tile.dragging,
+.list-item.dragging {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 10px 14px rgba(0, 0, 0, 0.18);
 }
 
 .board-tile h3 {
