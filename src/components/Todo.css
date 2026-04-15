@@ -97,25 +97,58 @@ li {
 }
 
 .list-item {
-  cursor: default;
+  cursor: grab;
   touch-action: pan-y;
   gap: 10px;
 }
 
-.drag-handle-invisible {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 45px;
-  height: 100%;
-  opacity: 0;
+.list-item.dragging {
+  cursor: grabbing;
+}
+
+.list-item.dragging .todo-text-input {
+  font-weight: bold;
+  border: none;
+}
+
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: 8px;
+  color: var(--button-hover-bg-color);
   cursor: grab;
-  pointer-events: auto;
+  touch-action: none;
+  background: transparent;
+}
+
+.drag-handle:hover,
+.drag-handle:focus {
+  background: transparent;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.list-item input,
+.list-item button {
+  touch-action: manipulation;
 }
 
 .todo-text-input {
   flex: 1;
   min-width: 0;
+  touch-action: manipulation;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.todo-text-input:focus {
+  /* outline: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transform: scale(1.002); */
 }
 
 input[type="checkbox"] {
@@ -269,8 +302,9 @@ form {
 
 .board-tile.dragging,
 .list-item.dragging {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0px 10px 14px rgba(0, 0, 0, 0.18);
+  /* If you want to add a dragging effect to the board tiles, you can uncomment the following lines. However, be cautious as it may cause issues on mobile devices due to touch interactions. */
+  /* background: rgba(255, 255, 255, 0.08); */
+  /* box-shadow: 0px 10px 14px rgba(0, 0, 0, 0.18); */
 }
 
 .board-tile h3 {
